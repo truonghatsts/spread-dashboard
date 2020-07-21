@@ -20,4 +20,5 @@ public class SpreadDashboardProperties {
 
     private String apiKey;
     private String secretKey;
+    private String defaultSymbolPattern;
 }
