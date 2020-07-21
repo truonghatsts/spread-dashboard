@@ -2,4 +2,4 @@
 .mvn/
 *.iml*
 target/
-db.mv.db
+*.db
