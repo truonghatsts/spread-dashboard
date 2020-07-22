@@ -47,7 +47,7 @@ public class TickerService {
     }
 
     public List<Ticker> getTickers(String symbol) {
-        return tickerRepository.findBySymbol(symbol);
+        return tickerRepository.findBySymbolOrderByTimestamp(symbol);
     }
 
     public Ticker getLastTicker(String symbol) {

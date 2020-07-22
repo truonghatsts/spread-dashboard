@@ -11,7 +11,7 @@ public interface TickerRepository extends CrudRepository<Ticker, Long> {
     @Query("SELECT DISTINCT t.symbol FROM Ticker t")
     List<String> getUniqueSymbolNames();
 
-    List<Ticker> findBySymbol(String symbol);
+    List<Ticker> findBySymbolOrderByTimestamp(String symbol);
 
     Ticker findTopBySymbolOrderByTimestampDesc(String symbol);
 

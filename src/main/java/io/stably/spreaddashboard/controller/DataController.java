@@ -1,13 +1,14 @@
 package io.stably.spreaddashboard.controller;
 
-import io.stably.spreaddashboard.domain.dto.AllSymbolSpreads;
 import io.stably.spreaddashboard.domain.dto.SymbolSpread;
 import io.stably.spreaddashboard.service.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -21,7 +22,17 @@ public class DataController {
     private DataService dataService;
 
     @GetMapping("/allSymbolSpreads")
-    public List<SymbolSpread> getSpreadData() {
+    public List<SymbolSpread> getAllSymbolSpreads() {
         return dataService.getSpreadData();
+    }
+
+    @GetMapping("/{symbol}/spreadInAmount")
+    public List<BigDecimal> getSpreadInAmount(@PathVariable("symbol") String symbol) {
+        return dataService.getSpreadInAmount(symbol);
+    }
+
+    @GetMapping("/{symbol}/spreadInPercentage")
+    public List<BigDecimal> getSpreadInPercentage(@PathVariable("symbol") String symbol) {
+        return dataService.getSpreadInPercentage(symbol);
     }
 }

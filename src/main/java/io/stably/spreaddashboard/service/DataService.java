@@ -7,6 +7,7 @@ import io.stably.spreaddashboard.domain.entity.Ticker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,5 +33,19 @@ public class DataService {
             symbolSpreads.add(symbolSpread);
         }
         return symbolSpreads;
+    }
+
+    public List<BigDecimal> getSpreadInAmount(String symbol) {
+        List<Ticker> tickers = tickerService.getTickers(symbol);
+        List<BigDecimal> spreads = new ArrayList<>();
+        tickers.forEach(ticker -> spreads.add(ticker.getSpreadInAmount()));
+        return spreads;
+    }
+
+    public List<BigDecimal> getSpreadInPercentage(String symbol) {
+        List<Ticker> tickers = tickerService.getTickers(symbol);
+        List<BigDecimal> spreads = new ArrayList<>();
+        tickers.forEach(ticker -> spreads.add(ticker.getSpreadInPercentage()));
+        return spreads;
     }
 }
