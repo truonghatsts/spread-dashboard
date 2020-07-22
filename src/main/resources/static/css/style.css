@@ -1,0 +1,50 @@
+.btn {
+    background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+    background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+    background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+    background-image: -o-linear-gradient(top, #3498db, #2980b9);
+    background-image: linear-gradient(to bottom, #3498db, #2980b9);
+    color: #ffffff;
+    padding: 2px;
+    text-decoration: none;
+    font-size: 90%;
+    text-align: center;
+}
+
+.green-background {
+    background: #70AD47;
+}
+
+.blue-background {
+    background: #4472C4;
+}
+
+.orange-background {
+    background: #ED7D31;
+}
+
+.yellow-background {
+    background: #FFC000;
+}
+
+.red-background {
+    background: #C00000;
+}
+
+.teal-background {
+    background: #008080;
+}
+
+.stats {
+    text-align: center;
+}
+
+.naive {
+    border-top: 4px solid green;
+    background: #FFFFFF;
+}
+
+.wise {
+    border-top: 4px solid purple;
+    background: #DDD1E7;
+}
