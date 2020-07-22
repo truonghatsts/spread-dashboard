@@ -1,13 +1,13 @@
 dashboard = {
     fetchAllSymbolSpreads: function () {
         $.ajax({
-          type: 'GET',
-          url: '/data/allSymbolSpreads',
-          dataType: 'json',
-          success: function (data) {
-            dashboard.allSymbolSpreads = data;
-            dashboard.showAllSymbolSpreadTable();
-          }
+            type: 'GET',
+            url: '/data/allSymbolSpreads',
+            dataType: 'json',
+            success: function (data) {
+                dashboard.allSymbolSpreads = data;
+                dashboard.showAllSymbolSpreadTable();
+            }
         });
     },
     showAllSymbolSpreadTable: function () {
@@ -23,8 +23,15 @@ dashboard = {
         table.append(thead);
         var tbody = $('<tbody>');
         dashboard.allSymbolSpreads.forEach(function (symbolSpread) {
+            var button = $('<button>', {
+                text: symbolSpread.symbol,
+                click: function () {
+                    dashboard.selectedSymbol = symbolSpread.symbol;
+                    dashboard.showCharts();
+                }
+            });
             var tr = $('<tr>').append(
-                $('<td>').text(symbolSpread.symbol),
+                $('<td>').html(button),
                 $('<td>').text(symbolSpread.bidPrice),
                 $('<td>').text(symbolSpread.askPrice),
                 $('<td>').text(symbolSpread.spreadInAmount),
@@ -35,7 +42,32 @@ dashboard = {
         table.append(tbody);
         $('#allSymbolSpreadTable').html(table);
         table.tablesorter({
-            sortList: [[1,0], [2,0]]
+            sortList: [[1, 0], [2, 0]]
         });
-    }
+    },
+    showCharts: function () {
+        alert("Showing charts for " + dashboard.selectedSymbol);
+        dashboard.showSpreadInPercentageChart(1);
+        dashboard.showSpreadInAmountChart(1);
+    },
+    showSpreadInPercentageChart: function (period) {
+        $.ajax({
+            type: 'GET',
+            url: '/data/' + dashboard.selectedSymbol + '/' + period + '/spreadInPercentage',
+            dataType: 'json',
+            success: function (data) {
+                dashboard.spreadInPercentage = data;
+            }
+        });
+    },
+    showSpreadInAmountChart: function (period) {
+        $.ajax({
+            type: 'GET',
+            url: '/data/' + dashboard.selectedSymbol + '/' + period +  '/spreadInAmount',
+            dataType: 'json',
+            success: function (data) {
+                dashboard.spreadInAmount = data;
+            }
+        });
+    },
 };

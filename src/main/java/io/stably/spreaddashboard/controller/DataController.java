@@ -26,13 +26,13 @@ public class DataController {
         return dataService.getSpreadData();
     }
 
-    @GetMapping("/{symbol}/spreadInAmount")
-    public List<BigDecimal> getSpreadInAmount(@PathVariable("symbol") String symbol) {
-        return dataService.getSpreadInAmount(symbol);
+    @GetMapping("/{symbol}/{period}/spreadInAmount")
+    public List<BigDecimal> getSpreadInAmount(@PathVariable("symbol") String symbol, @PathVariable("period") Integer period) {
+        return dataService.getSpreadInAmount(symbol, period);
     }
 
-    @GetMapping("/{symbol}/spreadInPercentage")
-    public List<BigDecimal> getSpreadInPercentage(@PathVariable("symbol") String symbol) {
-        return dataService.getSpreadInPercentage(symbol);
+    @GetMapping("/{symbol}/{period}/spreadInPercentage")
+    public List<BigDecimal> getSpreadInPercentage(@PathVariable("symbol") String symbol, @PathVariable("period") Integer period) {
+        return dataService.getSpreadInPercentage(symbol, period);
     }
 }

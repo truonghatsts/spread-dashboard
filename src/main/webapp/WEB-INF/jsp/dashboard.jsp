@@ -8,7 +8,6 @@
 <head>
     <title>Spread Dashboard</title>
     <link rel="stylesheet" href="/css/blue/style.css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
     <script src="/js/jquery-3.3.1.min.js"></script>
     <script src="/js/jquery.tablesorter.min.js"></script>
     <script src="/js/chart.min.js"></script>
@@ -20,7 +19,7 @@
         });
     </script>
 </head>
-<body style="font-family:arial; font-size: 8pt;">
+<body>
 
     <div class="container-sm">
         <div id="allSymbolSpreadTable">

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.Bidi;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +28,7 @@ public class DataService {
         List<String> symbolNames = tickerService.getSymbolNames();
         List<SymbolSpread> symbolSpreads = new ArrayList<>();
         AllSymbolSpreads data = new AllSymbolSpreads();
-        for(String symbol:symbolNames) {
+        for (String symbol : symbolNames) {
             Ticker lastTicker = tickerService.getLastTicker(symbol);
             SymbolSpread symbolSpread = ModelMapper.INSTANCE.tickerToSymbolSpread(lastTicker);
             symbolSpreads.add(symbolSpread);
@@ -35,17 +36,37 @@ public class DataService {
         return symbolSpreads;
     }
 
-    public List<BigDecimal> getSpreadInAmount(String symbol) {
+    public List<BigDecimal> getSpreadInAmount(String symbol, int period) {
         List<Ticker> tickers = tickerService.getTickers(symbol);
         List<BigDecimal> spreads = new ArrayList<>();
-        tickers.forEach(ticker -> spreads.add(ticker.getSpreadInAmount()));
+        BigDecimal max = BigDecimal.ZERO;
+        for (int i = 0; i < tickers.size(); i++) {
+            Ticker ticker = tickers.get(i);
+            if(max.compareTo(ticker.getSpreadInAmount()) < 0) {
+                max = ticker.getSpreadInAmount();
+            }
+            if (i % period == period - 1 || i == tickers.size() - 1) {
+                spreads.add(max);
+                max = BigDecimal.ZERO;
+            }
+        }
         return spreads;
     }
 
-    public List<BigDecimal> getSpreadInPercentage(String symbol) {
+    public List<BigDecimal> getSpreadInPercentage(String symbol, int period) {
         List<Ticker> tickers = tickerService.getTickers(symbol);
         List<BigDecimal> spreads = new ArrayList<>();
-        tickers.forEach(ticker -> spreads.add(ticker.getSpreadInPercentage()));
+        BigDecimal max = BigDecimal.ZERO;
+        for (int i = 0; i < tickers.size(); i++) {
+            Ticker ticker = tickers.get(i);
+            if(max.compareTo(ticker.getSpreadInPercentage()) < 0) {
+                max = ticker.getSpreadInPercentage();
+            }
+            if (i % period == period - 1 || i == tickers.size() - 1) {
+                spreads.add(max);
+                max = BigDecimal.ZERO;
+            }
+        }
         return spreads;
     }
 }
