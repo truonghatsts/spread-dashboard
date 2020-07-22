@@ -2,10 +2,7 @@ package io.stably.spreaddashboard.domain.dto;
 
 import lombok.*;
 
-import javax.persistence.Column;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author Fenix truonghatsts@gmail.com
@@ -19,6 +16,8 @@ import java.util.List;
 public class SymbolSpread {
 
     private String symbol;
+    private BigDecimal bidPrice;
+    private BigDecimal askPrice;
     private BigDecimal spreadInAmount;
     private BigDecimal spreadInPercentage;
 }
