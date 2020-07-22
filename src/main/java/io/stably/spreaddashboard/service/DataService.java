@@ -7,6 +7,7 @@ import io.stably.spreaddashboard.domain.entity.Ticker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,14 +22,15 @@ public class DataService {
     @Autowired
     private ConfigService configService;
 
-    public AllSymbolSpreads getSpreadData() {
+    public List<SymbolSpread> getSpreadData() {
         List<String> symbolNames = tickerService.getSymbolNames();
+        List<SymbolSpread> symbolSpreads = new ArrayList<>();
         AllSymbolSpreads data = new AllSymbolSpreads();
         for(String symbol:symbolNames) {
             Ticker lastTicker = tickerService.getLastTicker(symbol);
             SymbolSpread symbolSpread = ModelMapper.INSTANCE.tickerToSymbolSpread(lastTicker);
-            data.getSymbolSpreads().add(symbolSpread);
+            symbolSpreads.add(symbolSpread);
         }
-        return data;
+        return symbolSpreads;
     }
 }
