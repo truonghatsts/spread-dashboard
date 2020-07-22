@@ -27,7 +27,7 @@ public class TickerService {
         BigDecimal spreadInAmount = ticker.getAskPrice().subtract(ticker.getBidPrice());
         BigDecimal spreadInPercentage = BigDecimal.ONE;
         if(ticker.getAskPrice().compareTo(BigDecimal.ZERO) > 0) {
-            spreadInPercentage = spreadInAmount.divide(ticker.getAskPrice(), 4, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
+            spreadInPercentage = spreadInAmount.divide(ticker.getAskPrice(), 8, RoundingMode.HALF_UP).multiply(BigDecimal.valueOf(100));
         }
         ticker.setSpreadInAmount(spreadInAmount);
         ticker.setSpreadInPercentage(spreadInPercentage);
