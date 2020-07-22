@@ -17,7 +17,7 @@ public class DataController {
     @Autowired
     private DataService dataService;
 
-    @GetMapping("/spreadData")
+    @GetMapping("/allSymbolSpreads")
     public AllSymbolSpreads getSpreadData() {
         return dataService.getSpreadData();
     }
