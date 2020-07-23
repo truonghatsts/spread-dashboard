@@ -19,6 +19,7 @@
         $(document).ready(function () {
             dashboard.fetchAllSymbolSpreads();
             dashboard.buildChart("spreadChart");
+            dashboard.showTimeFrames();
         });
     </script>
 </head>
@@ -30,6 +31,7 @@
 
         </div>
         <div id="chart" style="display: none;">
+            <div id="timeframes"></div>
             <canvas id="spreadChart"></canvas>
         </div>
     </div>

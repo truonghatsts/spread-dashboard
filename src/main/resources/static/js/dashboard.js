@@ -1,4 +1,7 @@
 dashboard = {
+    selectedPeriod: 1,
+    selectedSymbol: null,
+    chart: null,
     fetchAllSymbolSpreads: function () {
         $.ajax({
             type: 'GET',
@@ -17,48 +20,74 @@ dashboard = {
             $('<th>').text('Bid Price'),
             $('<th>').text('Ask Price'),
             $('<th>').text('Spread Amount'),
-            $('<th>').text('Spread Percentage'),
-            $('<th>').text('Timeframe')
+            $('<th>').text('Spread Percentage')
         );
         var thead = $('<thead>').append(th);
         table.append(thead);
         var tbody = $('<tbody>');
         dashboard.allSymbolSpreads.forEach(function (symbolSpread) {
+
             var button = $('<a>', {
-                class: 'orange-background btn',
-                text: '1M',
+                class: 'green-background btn',
+                text: symbolSpread.symbol,
                 click: function () {
-                    dashboard.showCharts(symbolSpread.symbol, 1);
+                    dashboard.selectedSymbol = symbolSpread.symbol;
+                    dashboard.showCharts();
                 }
             });
+
             var tr = $('<tr>').append(
-                $('<td>').text(symbolSpread.symbol),
+                $('<td>').html(button),
                 $('<td>').text(symbolSpread.bidPrice),
                 $('<td>').text(symbolSpread.askPrice),
                 $('<td>').text(symbolSpread.spreadInAmount),
-                $('<td>').text(symbolSpread.spreadInPercentage),
-                $('<td>').append(button)
+                $('<td>').text(symbolSpread.spreadInPercentage)
             );
             tbody.append(tr);
         });
         table.append(tbody);
         $('#allSymbolSpreadTable').html(table);
         table.tablesorter({
-            sortList: [[1, 0], [2, 0]]
+            sortList: [[3, 0], [4, 0]]
         });
     },
-    showCharts: function (symbol, period) {
+    showTimeFrames: function () {
+        timeframes = [
+            { label: '1M', period: 1 },
+            { label: '5M', period: 5 },
+            { label: '10M', period: 10 },
+            { label: '15M', period: 15 },
+            { label: '30M', period: 30 },
+            { label: '1H', period: 60 },
+            { label: '4H', period: 4 * 60 },
+            { label: '12H', period: 12 * 60 },
+            { label: '1D', period: 24 * 60 }
+        ];
+
+        timeframes.forEach(function (item) {
+            var button = $('<a>', {
+                class: 'orange-background btn',
+                text: item.label,
+                click: function () {
+                    dashboard.selectedPeriod = item.period;
+                    dashboard.showCharts();
+                }
+            });
+            $('#timeframes').append(button);
+        });
+    },
+    showCharts: function () {
         $.ajax({
             type: 'GET',
-            url: '/data/' + symbol + '/' + period + '/spreadInPercentage',
+            url: '/data/' + dashboard.selectedSymbol + '/' + dashboard.selectedPeriod + '/spreadInPercentage',
             dataType: 'json',
             success: function (data) {
                 $("#chart").show();
-                dashboard.updateChart(symbol, data);
+                dashboard.updateChart(data);
             }
         });
     },
-    updateChart: function (symbol, data) {
+    updateChart: function (data) {
         var labels = [];
         for (i = 0; i < data.length; i++) {
             labels.push("");
@@ -66,10 +95,9 @@ dashboard = {
         dashboard.chart;
         dashboard.chart.data.labels = labels;
         dashboard.chart.data.datasets[0].data = data;
-        dashboard.chart.options.title.text = symbol;
+        dashboard.chart.options.title.text = dashboard.selectedSymbol;
         dashboard.chart.update();
     },
-    chart: null,
     buildChart: function (id) {
         dashboard.chart = new Chart(document.getElementById(id).getContext('2d'), {
             type: 'line',
