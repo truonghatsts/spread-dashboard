@@ -3,6 +3,7 @@ package io.stably.spreaddashboard.service;
 import io.stably.spreaddashboard.domain.entity.Ticker;
 import io.stably.spreaddashboard.repository.TickerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -47,7 +48,7 @@ public class TickerService {
     }
 
     public List<Ticker> getTickers(String symbol) {
-        return tickerRepository.findBySymbolOrderByTimestamp(symbol);
+        return tickerRepository.findBySymbolOrderByTimestampDesc(symbol, PageRequest.of(0, configService.getWindowSize()));
     }
 
     public Ticker getLastTicker(String symbol) {

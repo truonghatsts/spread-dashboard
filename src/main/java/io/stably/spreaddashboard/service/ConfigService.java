@@ -30,4 +30,13 @@ public class ConfigService {
         return symbolPattern;
     }
 
+    public Integer getWindowSize() {
+        Integer windowSize = props.getDefaultWindowSize();
+        Optional<SpreadDashboardConfiguration> windowSizeFromDb = configRepository.findByKey("windowSize");
+        if(windowSizeFromDb.isPresent()) {
+            windowSize = Integer.parseInt(windowSizeFromDb.get().getValue());
+        }
+        return windowSize;
+    }
+
 }
