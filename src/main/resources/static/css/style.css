@@ -48,3 +48,9 @@
     border-top: 4px solid purple;
     background: #DDD1E7;
 }
+
+.center {
+  margin: auto;
+  width: 768px;
+  padding: 10px;
+}

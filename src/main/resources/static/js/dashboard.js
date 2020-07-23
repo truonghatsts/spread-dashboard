@@ -17,25 +17,27 @@ dashboard = {
             $('<th>').text('Bid Price'),
             $('<th>').text('Ask Price'),
             $('<th>').text('Spread Amount'),
-            $('<th>').text('Spread Percentage')
+            $('<th>').text('Spread Percentage'),
+            $('<th>').text('Timeframe')
         );
         var thead = $('<thead>').append(th);
         table.append(thead);
         var tbody = $('<tbody>');
         dashboard.allSymbolSpreads.forEach(function (symbolSpread) {
-            var button = $('<button>', {
-                text: symbolSpread.symbol,
+            var button = $('<a>', {
+                class: 'orange-background btn',
+                text: '1M',
                 click: function () {
-                    dashboard.selectedSymbol = symbolSpread.symbol;
-                    dashboard.showCharts();
+                    dashboard.showCharts(symbolSpread.symbol, 1);
                 }
             });
             var tr = $('<tr>').append(
-                $('<td>').html(button),
+                $('<td>').text(symbolSpread.symbol),
                 $('<td>').text(symbolSpread.bidPrice),
                 $('<td>').text(symbolSpread.askPrice),
                 $('<td>').text(symbolSpread.spreadInAmount),
-                $('<td>').text(symbolSpread.spreadInPercentage)
+                $('<td>').text(symbolSpread.spreadInPercentage),
+                $('<td>').append(button)
             );
             tbody.append(tr);
         });
@@ -45,29 +47,59 @@ dashboard = {
             sortList: [[1, 0], [2, 0]]
         });
     },
-    showCharts: function () {
-        alert("Showing charts for " + dashboard.selectedSymbol);
-        dashboard.showSpreadInPercentageChart(1);
-        dashboard.showSpreadInAmountChart(1);
-    },
-    showSpreadInPercentageChart: function (period) {
+    showCharts: function (symbol, period) {
         $.ajax({
             type: 'GET',
-            url: '/data/' + dashboard.selectedSymbol + '/' + period + '/spreadInPercentage',
+            url: '/data/' + symbol + '/' + period + '/spreadInPercentage',
             dataType: 'json',
             success: function (data) {
-                dashboard.spreadInPercentage = data;
+                $("#chart").show();
+                dashboard.updateChart(symbol, data);
             }
         });
     },
-    showSpreadInAmountChart: function (period) {
-        $.ajax({
-            type: 'GET',
-            url: '/data/' + dashboard.selectedSymbol + '/' + period +  '/spreadInAmount',
-            dataType: 'json',
-            success: function (data) {
-                dashboard.spreadInAmount = data;
+    updateChart: function (symbol, data) {
+        var labels = [];
+        for (i = 0; i < data.length; i++) {
+            labels.push("");
+        }
+        dashboard.chart;
+        dashboard.chart.data.labels = labels;
+        dashboard.chart.data.datasets[0].data = data;
+        dashboard.chart.options.title.text = symbol;
+        dashboard.chart.update();
+    },
+    chart: null,
+    buildChart: function (id) {
+        dashboard.chart = new Chart(document.getElementById(id).getContext('2d'), {
+            type: 'line',
+            data: {
+                labels: [],
+                datasets: [
+                    {
+                        label: 'Spread',
+                        data: [],
+                        backgroundColor: 'rgba(255, 255, 255, 0)',
+                        borderColor: 'rgba(255, 198, 16, 1)'
+                    }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Spread"
+                },
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                }
             }
         });
-    },
+    }
 };
