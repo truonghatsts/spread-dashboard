@@ -47,8 +47,8 @@ public class TickerService {
         return symbolNames;
     }
 
-    public List<Ticker> getTickers(String symbol) {
-        return tickerRepository.findBySymbolOrderByTimestampDesc(symbol, PageRequest.of(0, configService.getWindowSize()));
+    public List<Ticker> getTickers(String symbol, int period) {
+        return tickerRepository.findBySymbolOrderByTimestampDesc(symbol, PageRequest.of(0, period * configService.getWindowSize()));
     }
 
     public Ticker getLastTicker(String symbol) {

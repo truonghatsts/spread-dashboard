@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.text.Bidi;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class DataService {
     }
 
     public List<BigDecimal> getSpreadInAmount(String symbol, int period) {
-        List<Ticker> tickers = tickerService.getTickers(symbol);
+        List<Ticker> tickers = tickerService.getTickers(symbol, period);
         List<BigDecimal> spreads = new ArrayList<>();
         BigDecimal max = BigDecimal.ZERO;
         for (int i = 0; i < tickers.size(); i++) {
@@ -54,7 +53,7 @@ public class DataService {
     }
 
     public List<BigDecimal> getSpreadInPercentage(String symbol, int period) {
-        List<Ticker> tickers = tickerService.getTickers(symbol);
+        List<Ticker> tickers = tickerService.getTickers(symbol, period);
         List<BigDecimal> spreads = new ArrayList<>();
         BigDecimal max = BigDecimal.ZERO;
         for (int i = 0; i < tickers.size(); i++) {
